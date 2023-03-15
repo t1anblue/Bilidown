@@ -4,7 +4,7 @@ lux=/usr/local/bin/lux
 #telegram_bot_token=""
 #telegram_chat_id=""
 #RSS 地址 自建的话就写:127.0.0.1:1200
-rssURL="http://你的rsshub服务地址/bilibili/$1/$2/$3 -q -O -"
+rssURL="http://192.168.3.88:11301/bilibili/$1/$2/$3 -q -O -"
 #脚本存放地址
 scriptLocation="/root/bilidown/bili-cookies/"
 #视频存放地址
@@ -99,7 +99,7 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
         done
 		#发送开始下载邮件（自行修改邮件地址）
         #echo "$message" | mail -s "BFD：开始下载" $mailAddress
-        curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/sendMessage" -d chat_id=$telegram_chat_id -d parse_mode=html -d text="<b>BFD：开始下载</b>%0A%0A$message"
+        #curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/sendMessage" -d chat_id=$telegram_chat_id -d parse_mode=html -d text="<b>BFD：开始下载</b>%0A%0A$message"
         #下载视频到指定位置（视频存储位置自行修改；下载B站经常会出错，所以添加了出错重试代码）
         count=1
         echo "1" > "${scriptLocation}${cur_sec}mark.txt"
@@ -116,19 +116,19 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
                     mv "$videoLocation$name"/$pname "$videoLocation$name"/poster.png
                 fi
                 #xml转ass && 获取下载完的视频文件信息
-                for file in "$videoLocation$name"/*; do
-                    if [ "${file##*.}" = "xml" ]; then
-                        "${scriptLocation}"DanmakuFactory -o "${file%%.cmt.xml*}".ass -i "$file"
-                        #删除源文件
-                        #rm "$file"
-                    elif [ "${file##*.}" = "mp4" ] || [ "${file##*.}" = "flv" ] || [ "${file##*.}" = "mkv" ]; then
-                        videoname=${file#*"$name"\/}
-                        videostat=$(du -h "$file")
-                        videosize=${videostat%%\/*}
-                        videosize=$(echo $videosize)
+                #for file in "$videoLocation$name"/*; do
+                    #if [ "${file##*.}" = "xml" ]; then
+                       # "${scriptLocation}"DanmakuFactory -o "${file%%.cmt.xml*}".ass -i "$file"
+                      #  #删除源文件
+                     #   #rm "$file"
+                   # elif [ "${file##*.}" = "mp4" ] || [ "${file##*.}" = "flv" ] || [ "${file##*.}" = "mkv" ]; then
+                      #  videoname=${file#*"$name"\/}
+                      #  videostat=$(du -h "$file")
+                     #   videosize=${videostat%%\/*}
+                      #  videosize=$(echo $videosize)
                         #videomessage=${videomessage}"Title: "${videoname}$'\n'"Size: "${videosize}$'\n\n'  #邮件方式
                         #videomessage=${videomessage}"Title:%20"${videoname}"%0ASize:%20"${videosize}"%0A%0A" #telegram方式
-                    fi
+                   # fi
                 done
                 #发送下载完成邮件
                 #echo "$videomessage" | mail -s "BFD：下载完成" $mailAddress
@@ -179,5 +179,5 @@ if [ "$pubdate" != "$olddate" ] && [ "$result" != "" ] && [ "$result6" = "" ]; t
         # rm "${scriptLocation}${cur_sec}mark.txt"
     # else
         # curl -s -X POST "https://api.telegram.org/bot$telegram_bot_token/sendMessage" -d chat_id=$telegram_chat_id -d parse_mode=html -d text="<b>BFD：Cookies 文件失效，请更新后重试</b>%0A%0A$videomessage"
-    # fi
+    fi
 fi
