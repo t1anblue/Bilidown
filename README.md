@@ -2,20 +2,15 @@
 
 ## 注意
 
-此脚本为自用脚本`deepin/ubuntu`，不保证其他机子能正常运行
+测试自用，部署docker测试中
 
-原作者指路:https://github.com/Left024/BiliFavoritesDownloader
+原作者指路:[https://github.com/Left024/BiliFavoritesDownloader](https://github.com/hechuan4/BiliFavoritesDownloader)
 
-我只改了改下载
 
 ## 功能
 
-- [x] telegram 通知，实时下载进度查看
 - [x] 最高清晰度下载（需要大会员）
-- [x] 邮件通知
 - [x] 封面图下载
-- [x] xml 转 ass
-- [x] 下载完成上传 OneDrive
 
 ## 更新日志
 
